@@ -163,7 +163,6 @@ struct ContentView: View {
             }
         }
     }
-
     // MARK: - Shrinking Button Challenge
 
     var buttonSize: CGFloat {
