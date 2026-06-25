@@ -1,7 +1,7 @@
 import SwiftUI
 internal import Combine
 
-struct ContentView: View {
+struct TapFrenzyView: View {
 
     // MARK: - Game State
 
@@ -197,5 +197,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    TapFrenzyView()
 }
