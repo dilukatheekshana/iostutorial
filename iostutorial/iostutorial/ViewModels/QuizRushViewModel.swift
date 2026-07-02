@@ -14,9 +14,7 @@ class QuizRushViewModel: ObservableObject {
 
     @Published var streak = 0
 
-    @Published var isLoading = false
-
-    @Published var errorMessage: String?
+    @Published var state: QuizViewState = .idle
 
     @Published var gameFinished = false
 
@@ -38,8 +36,7 @@ class QuizRushViewModel: ObservableObject {
 
     func loadQuestions(category: Int?, difficulty: String?) async {
 
-        isLoading = true
-        errorMessage = nil
+        state = .loading
         gameFinished = false
 
         do {
@@ -53,13 +50,16 @@ class QuizRushViewModel: ObservableObject {
             score = 0
             streak = 0
 
+            state = .loaded
+
         } catch {
 
-            errorMessage = "Unable to load questions.\nPlease check your internet connection."
+            state = .failed(
+                "Unable to load questions.\nPlease check your internet connection."
+            )
 
         }
 
-        isLoading = false
     }
 
     // MARK: - Answer Question
@@ -112,7 +112,7 @@ class QuizRushViewModel: ObservableObject {
         currentQuestionIndex = 0
         score = 0
         streak = 0
-        errorMessage = nil
+        state = .idle
         gameFinished = false
 
     }
