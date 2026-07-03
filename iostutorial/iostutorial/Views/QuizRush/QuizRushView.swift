@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct QuizRushView: View {
+
+    @ObservedObject var viewModel: QuizRushViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        ZStack {
+
+            Color.black
+                .ignoresSafeArea()
+
+            Text("Quiz Screen Coming Soon")
+                .font(.title)
+                .foregroundStyle(.white)
+
+        }
+
     }
+
 }
 
 #Preview {
-    QuizRushView()
+    QuizRushView(
+        viewModel: QuizRushViewModel()
+    )
 }

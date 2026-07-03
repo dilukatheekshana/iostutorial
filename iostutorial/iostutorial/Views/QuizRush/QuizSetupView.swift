@@ -8,9 +8,108 @@
 import SwiftUI
 
 struct QuizSetupView: View {
+
+    @StateObject private var viewModel = QuizRushViewModel()
+
+    @State private var selectedCategory: TriviaCategory? = TriviaCategory.all.first
+
+    @State private var selectedDifficulty = "easy"
+
+    @State private var startQuiz = false
+
+    private let difficulties = [
+        "easy",
+        "medium",
+        "hard"
+    ]
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        NavigationStack {
+
+            ZStack {
+
+                Color.black
+                    .ignoresSafeArea()
+
+                VStack(spacing: 25) {
+
+                    Spacer()
+
+                    VStack(spacing: 8) {
+
+                        Text("🧠")
+                            .font(.system(size: 60))
+
+                        Text("Quiz Rush")
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundStyle(.white)
+
+                        Text("Test Your Knowledge")
+                            .foregroundStyle(.gray)
+
+                    }
+
+                    SectionCard(title: "Category") {
+
+                        Picker("Category", selection: $selectedCategory) {
+
+                            ForEach(TriviaCategory.all) { category in
+
+                                Text(category.name)
+                                    .tag(category as TriviaCategory?)
+
+                            }
+
+                        }
+                        .pickerStyle(.menu)
+
+                    }
+
+                    SectionCard(title: "Difficulty") {
+
+                        Picker("Difficulty", selection: $selectedDifficulty) {
+
+                            ForEach(difficulties, id: \.self) { difficulty in
+
+                                Text(difficulty.capitalized)
+                                    .tag(difficulty)
+
+                            }
+
+                        }
+                        .pickerStyle(.segmented)
+
+                    }
+
+                    PrimaryButton(title: "Start Quiz") {
+
+                        startQuiz = true
+
+                    }
+
+                    Spacer()
+
+                    NavigationLink(
+                        "",
+                        destination: QuizRushView(
+                            viewModel: viewModel
+                        ),
+                        isActive: $startQuiz
+                    )
+                    .hidden()
+
+                }
+                .padding()
+
+            }
+            .navigationBarHidden(true)
+
+        }
+
     }
+
 }
 
 #Preview {
