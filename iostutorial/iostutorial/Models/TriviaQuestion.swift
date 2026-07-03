@@ -27,4 +27,8 @@ struct TriviaQuestion: Codable, Identifiable {
         case incorrectAnswers = "incorrect_answers"
     }
     
+    var allAnswers: [String] {
+        ([correctAnswer] + incorrectAnswers).shuffled()
+    }
+    
 }

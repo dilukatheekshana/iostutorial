@@ -1,43 +1,46 @@
 import Foundation
-import SwiftUI
 internal import Combine
 
 @MainActor
 class QuizRushViewModel: ObservableObject {
 
-    // MARK: - Data
-    @Published var questions: [TriviaQuestion] = []
-    @Published var currentQuestionIndex = 0
-    @Published var currentAnswers: [String] = []
+    // MARK: - Published Properties
 
-    // MARK: - Score
+    @Published var questions: [TriviaQuestion] = []
+
+    @Published var currentQuestionIndex = 0
+
     @Published var score = 0
+
     @Published var streak = 0
 
-    // MARK: - State
     @Published var state: QuizViewState = .idle
-    @Published var showResult = false
 
-    // MARK: - UI Feedback
-    @Published var selectedAnswer: String? = nil
-    @Published var isAnswerCorrect: Bool? = nil
-    @Published var isProcessing = false
+    @Published var gameFinished = false
+
+    // MARK: - API Service
 
     private let apiService = TriviaAPIService()
 
-    // MARK: - Current Question
+    // MARK: - Computed Property
+
     var currentQuestion: TriviaQuestion? {
-        guard currentQuestionIndex < questions.count else { return nil }
+        guard currentQuestionIndex < questions.count else {
+            return nil
+        }
+
         return questions[currentQuestionIndex]
     }
 
     // MARK: - Load Questions
+
     func loadQuestions(category: Int?, difficulty: String?) async {
 
         state = .loading
-        showResult = false
+        gameFinished = false
 
         do {
+
             questions = try await apiService.fetchQuestions(
                 category: category,
                 difficulty: difficulty
@@ -47,37 +50,27 @@ class QuizRushViewModel: ObservableObject {
             score = 0
             streak = 0
 
-            prepareAnswers()
             state = .loaded
 
         } catch {
-            state = .failed("Failed to load questions. Check internet.")
+
+            state = .failed(
+                "Unable to load questions.\nPlease check your internet connection."
+            )
+
         }
     }
 
-    // MARK: - Prepare Answers
-    private func prepareAnswers() {
+    // MARK: - Answer Question
 
-        guard let question = currentQuestion else { return }
-
-        currentAnswers = ([question.correctAnswer] + question.incorrectAnswers)
-            .map { $0.htmlDecoded }
-            .shuffled()
-    }
-
-    // MARK: - Answer Logic (WITH ANIMATION SUPPORT)
     func answerQuestion(selectedAnswer: String) {
 
-        guard !isProcessing else { return }
-        guard let question = currentQuestion else { return }
+        guard let question = currentQuestion else {
+            return
+        }
 
-        isProcessing = true
-        self.selectedAnswer = selectedAnswer
+        if selectedAnswer == question.correctAnswer {
 
-        let correct = selectedAnswer == question.correctAnswer.htmlDecoded
-        isAnswerCorrect = correct
-
-        if correct {
             score += 10
             streak += 1
 
@@ -86,44 +79,41 @@ class QuizRushViewModel: ObservableObject {
             }
 
         } else {
+
             score = max(score - 2, 0)
             streak = 0
+
         }
 
-        // Delay before next question (UX polish)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-
-            self.nextQuestion()
-
-            self.selectedAnswer = nil
-            self.isAnswerCorrect = nil
-            self.isProcessing = false
-        }
+        nextQuestion()
     }
 
     // MARK: - Next Question
+
     private func nextQuestion() {
 
         if currentQuestionIndex < questions.count - 1 {
 
             currentQuestionIndex += 1
-            prepareAnswers()
 
         } else {
 
-            showResult = true
+            gameFinished = true
+
         }
     }
 
-    // MARK: - Reset
+    // MARK: - Restart Game
+
     func resetGame() {
 
-        questions = []
+        questions.removeAll()
         currentQuestionIndex = 0
-        currentAnswers = []
         score = 0
         streak = 0
-        showResult = false
         state = .idle
+        gameFinished = false
+
     }
+
 }
