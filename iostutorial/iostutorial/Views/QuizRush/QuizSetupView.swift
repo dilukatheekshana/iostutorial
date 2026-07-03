@@ -85,20 +85,24 @@ struct QuizSetupView: View {
 
                     PrimaryButton(title: "Start Quiz") {
 
-                        startQuiz = true
+                        Task {
+
+                            await viewModel.loadQuestions(
+                                category: selectedCategory?.id,
+                                difficulty: selectedDifficulty
+                            )
+
+                            startQuiz = true
+
+                        }
 
                     }
 
                     Spacer()
 
-                    NavigationLink(
-                        "",
-                        destination: QuizRushView(
-                            viewModel: viewModel
-                        ),
-                        isActive: $startQuiz
-                    )
-                    .hidden()
+                    .navigationDestination(isPresented: $startQuiz) {
+                         QuizRushView(viewModel: viewModel)
+                     }
 
                 }
                 .padding()

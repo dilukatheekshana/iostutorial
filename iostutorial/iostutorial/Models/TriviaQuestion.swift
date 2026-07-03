@@ -26,4 +26,5 @@ struct TriviaQuestion: Codable, Identifiable {
         case correctAnswer = "correct_answer"
         case incorrectAnswers = "incorrect_answers"
     }
+    
 }

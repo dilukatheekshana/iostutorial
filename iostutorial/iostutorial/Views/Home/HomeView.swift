@@ -32,7 +32,7 @@ struct HomeView: View {
                 
                 NavigationLink("Quiz Rush") {
                     
-                    //QuizRushView()
+                    QuizSetupView()
                 }
                 .frame(width: 250, height: 60)
                 .background(Color.red)
