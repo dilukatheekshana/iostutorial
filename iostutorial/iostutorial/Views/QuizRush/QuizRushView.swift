@@ -3,11 +3,21 @@ import SwiftUI
 struct QuizRushView: View {
 
     @ObservedObject var viewModel: QuizRushViewModel
+    
     @State private var showResults = false
 
     var body: some View {
 
         ZStack {
+            
+            if viewModel.showFlash {
+
+                Color(viewModel.flashIsCorrect ? .green : .red)
+                    .opacity(0.3)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+
+            }
 
             Color.black
                 .ignoresSafeArea()
@@ -53,24 +63,51 @@ struct QuizRushView: View {
 
                         HStack {
 
-                            Label("Score: \(viewModel.score)", systemImage: "star.fill")
-                                .foregroundStyle(.yellow)
+                            VStack(alignment: .leading) {
+
+                                Text("Score")
+                                    .foregroundStyle(.gray)
+
+                                Text("\(viewModel.score)")
+                                    .bold()
+                                    .foregroundStyle(.yellow)
+
+                            }
 
                             Spacer()
 
-                            Label("Streak: \(viewModel.streak)", systemImage: "flame.fill")
-                                .foregroundStyle(.orange)
+                            VStack(alignment: .trailing) {
+
+                                Text("Streak")
+                                    .foregroundStyle(.gray)
+
+                                Text("\(viewModel.streak)")
+                                    .bold()
+                                    .foregroundStyle(.orange)
+
+                            }
 
                         }
 
                         // Progress
 
-                        Text("Question \(viewModel.currentQuestionIndex + 1) of \(viewModel.questions.count)")
+                        VStack(spacing: 8) {
+
+                            Text("Question \(viewModel.currentQuestionIndex + 1) of \(viewModel.questions.count)")
+                                .foregroundStyle(.gray)
+
+                            ProgressView(
+                                value: Double(viewModel.currentQuestionIndex + 1),
+                                total: Double(viewModel.questions.count)
+                            )
+                            .tint(.purple)
+
+                        }
                             .foregroundStyle(.gray)
 
                         // Question
 
-                        Text(question.question)
+                        Text(question.question.htmlDecoded)
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
@@ -81,13 +118,24 @@ struct QuizRushView: View {
 
                         // Answers
 
-                        ForEach(question.allAnswers, id: \.self) { answer in
+                        ForEach(viewModel.answers, id: \.self) { answer in
 
-                            PrimaryButton(title: answer) {
+                            Button {
 
                                 viewModel.answerQuestion(selectedAnswer: answer)
 
+                            } label: {
+
+                                Text(answer)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(buttonColor(answer))
+                                    .cornerRadius(14)
+
                             }
+                            .disabled(viewModel.answerSubmitted)
 
                         }
 
@@ -95,12 +143,48 @@ struct QuizRushView: View {
 
                     }
                     .padding()
+                    
 
                 }
-
+                
             }
+            
+        }
+        
+        .navigationDestination(
+            isPresented: $viewModel.gameFinished
+        ) {
+
+            QuizResultView(
+                viewModel: viewModel
+            )
 
         }
+
+    }
+    
+    private func buttonColor(_ answer: String) -> Color {
+
+        guard viewModel.answerSubmitted,
+              let question = viewModel.currentQuestion else {
+
+            return .purple
+
+        }
+
+        if answer == question.correctAnswer.htmlDecoded {
+
+            return .green
+
+        }
+
+        if answer == viewModel.selectedAnswer {
+
+            return .red
+
+        }
+
+        return .purple
 
     }
 

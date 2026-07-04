@@ -18,92 +18,94 @@ struct QuizSetupView: View {
 
     var body: some View {
 
-        NavigationStack {
+        ZStack {
 
-            ZStack {
+            Color.black
+                .ignoresSafeArea()
 
-                Color.black
-                    .ignoresSafeArea()
+            VStack(spacing: 25) {
 
-                VStack(spacing: 25) {
+                Spacer()
 
-                    Spacer()
+                VStack(spacing: 8) {
 
-                    VStack(spacing: 8) {
+                    Text("📚")
+                        .font(.system(size: 60))
 
-                        Text("🧠")
-                            .font(.system(size: 60))
+                    Text("Quiz Rush")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundStyle(.white)
 
-                        Text("Quiz Rush")
-                            .font(.largeTitle)
-                            .bold()
-                            .foregroundStyle(.white)
-
-                        Text("Test Your Knowledge")
-                            .foregroundStyle(.gray)
-
-                    }
-
-                    SectionCard(title: "Category") {
-
-                        Picker("Category", selection: $selectedCategory) {
-
-                            ForEach(TriviaCategory.all) { category in
-
-                                Text(category.name)
-                                    .tag(category as TriviaCategory?)
-
-                            }
-
-                        }
-                        .pickerStyle(.menu)
-
-                    }
-
-                    SectionCard(title: "Difficulty") {
-
-                        Picker("Difficulty", selection: $selectedDifficulty) {
-
-                            ForEach(difficulties, id: \.self) { difficulty in
-
-                                Text(difficulty.capitalized)
-                                    .tag(difficulty)
-
-                            }
-
-                        }
-                        .pickerStyle(.segmented)
-
-                    }
-
-                    PrimaryButton(title: "Start Quiz") {
-
-                        Task {
-
-                            await viewModel.loadQuestions(
-                                category: selectedCategory?.id,
-                                difficulty: selectedDifficulty
-                            )
-
-                            startQuiz = true
-
-                        }
-
-                    }
-
-                    Spacer()
-
-                        .navigationDestination(isPresented: $startQuiz) {
-                            QuizRushView(viewModel: viewModel)
-                        }
+                    Text("Test Your Knowledge")
+                        .foregroundStyle(.gray)
 
                 }
-                .padding()
+
+                SectionCard(title: "Category") {
+
+                    Picker("Category", selection: $selectedCategory) {
+
+                        ForEach(TriviaCategory.all) { category in
+
+                            Text(category.name)
+                                .tag(category as TriviaCategory?)
+
+                        }
+
+                    }
+                    .pickerStyle(.menu)
+
+                }
+
+                SectionCard(title: "Difficulty") {
+
+                    Picker("Difficulty", selection: $selectedDifficulty) {
+
+                        ForEach(difficulties, id: \.self) { difficulty in
+
+                            Text(difficulty.capitalized)
+                                .tag(difficulty)
+
+                        }
+
+                    }
+                    .pickerStyle(.segmented)
+
+                }
+
+                PrimaryButton(title: "Start Quiz") {
+
+                    Task {
+
+                        await viewModel.loadQuestions(
+                            category: selectedCategory?.id,
+                            difficulty: selectedDifficulty
+                        )
+
+                        startQuiz = true
+
+                    }
+
+                }
+                NavigationLink {
+                    QuizHighScoreView(viewModel: viewModel)
+                } label: {
+                    Text("View High Scores")
+                        .foregroundStyle(.gray)
+                }
+
+                Spacer()
+
+                    .navigationDestination(isPresented: $startQuiz) {
+                        QuizRushView(viewModel: viewModel)
+                    }
 
             }
-            .navigationBarHidden(true)
+            .padding()
 
         }
+//        .navigationBarHidden(true)
 
     }
 

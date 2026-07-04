@@ -1,22 +1,10 @@
-//
-//  QuizResultView.swift
-//  iostutorial
-//
-//  Created by Student3 on 2026-07-02.
-//
-
 import SwiftUI
 
 struct QuizResultView: View {
 
-    let score: Int
-    let totalQuestions: Int
+    @ObservedObject var viewModel: QuizRushViewModel
 
     @Environment(\.dismiss) private var dismiss
-
-    private var accuracy: Int {
-        Int((Double(score) / Double(totalQuestions * 10)) * 100)
-    }
 
     var body: some View {
 
@@ -25,27 +13,46 @@ struct QuizResultView: View {
             Color.black
                 .ignoresSafeArea()
 
-            VStack(spacing: 30) {
+            VStack(spacing: 25) {
 
                 Spacer()
 
-                Image(systemName: score >= 80 ? "crown.fill" : "trophy.fill")
+                Image(systemName: "trophy.fill")
                     .font(.system(size: 70))
-                    .foregroundStyle(.yellow)
+                    .foregroundColor(.yellow)
 
-                Text(score >= 80 ? "Excellent!" : "Quiz Complete!")
+                Text("Quiz Complete!")
                     .font(.largeTitle)
                     .bold()
                     .foregroundStyle(.white)
 
-                VStack(spacing: 15) {
+                VStack(spacing: 12) {
 
                     Text("Final Score")
 
-                    Text("\(score)")
-                        .font(.system(size: 55, weight: .bold))
+                    Text("\(viewModel.score)")
+                        .font(.system(size: 55))
+                        .bold()
 
-                    Text("Accuracy: \(accuracy)%")
+                }
+                .foregroundStyle(.white)
+
+                VStack(spacing: 10) {
+
+                    Label(
+                        "Correct Answers: \(viewModel.correctAnswers)/10",
+                        systemImage: "checkmark.circle.fill"
+                    )
+
+                    Label(
+                        "Accuracy: \(viewModel.accuracy)%",
+                        systemImage: "chart.bar.fill"
+                    )
+
+                    Label(
+                        "Best Streak: \(viewModel.streak)",
+                        systemImage: "flame.fill"
+                    )
 
                 }
                 .foregroundStyle(.white)
@@ -54,9 +61,18 @@ struct QuizResultView: View {
 
                 PrimaryButton(title: "Play Again") {
 
+                    viewModel.resetGame()
+
                     dismiss()
 
                 }
+
+                Button("Back to Home") {
+
+                    dismiss()
+
+                }
+                .foregroundStyle(.gray)
 
             }
             .padding()
@@ -72,8 +88,7 @@ struct QuizResultView: View {
 #Preview {
 
     QuizResultView(
-        score: 75,
-        totalQuestions: 10
+        viewModel: QuizRushViewModel()
     )
 
 }
