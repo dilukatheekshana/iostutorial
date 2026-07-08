@@ -11,7 +11,7 @@ import SwiftUI
 struct iostutorialApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainTabView()
         }
     }
 }
