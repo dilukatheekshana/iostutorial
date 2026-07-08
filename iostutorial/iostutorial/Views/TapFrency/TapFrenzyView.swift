@@ -185,7 +185,10 @@ struct TapFrenzyView: View {
                 }
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
+    
+        
     // MARK: - Shrinking Button Challenge
 
     var buttonSize: CGFloat {
@@ -218,6 +221,7 @@ struct TapFrenzyView: View {
         buttonY = geometry.size.height * 0.70
     }
 }
+
 
 #Preview {
     TapFrenzyView()

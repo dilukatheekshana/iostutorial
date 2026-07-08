@@ -204,6 +204,7 @@ struct LightItUpView: View {
                 lightRandomCards()
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 
     // MARK: - Level Configuration

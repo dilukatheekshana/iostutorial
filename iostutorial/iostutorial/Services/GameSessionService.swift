@@ -6,6 +6,7 @@
 //
 
 import Foundation
+internal import _LocationEssentials
 
 final class GameSessionService {
 
@@ -27,9 +28,28 @@ final class GameSessionService {
     }
 
     func addSession(_ session: GameSession) {
+
+        let location = LocationService.shared.currentLocation
+
+        let updatedSession = GameSession(
+            id: session.id,
+            mode: session.mode,
+            score: session.score,
+            timestamp: session.timestamp,
+            latitude: location?.coordinate.latitude ?? 0,
+            longitude: location?.coordinate.longitude ?? 0
+        )
+
         var sessions = loadSessions()
-        sessions.append(session)
+
+        sessions.append(updatedSession)
+
         saveSessions(sessions)
+
+        NotificationCenter.default.post(
+            name: .gameSessionsUpdated,
+            object: nil
+        )
     }
 
     func saveSessions(_ sessions: [GameSession]) {
@@ -60,4 +80,9 @@ final class GameSessionService {
 
         return Double(total) / Double(sessions.count)
     }
+    
+}
+
+extension Notification.Name {
+    static let gameSessionsUpdated = Notification.Name("gameSessionsUpdated")
 }

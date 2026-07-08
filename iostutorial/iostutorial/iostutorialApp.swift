@@ -12,6 +12,10 @@ struct iostutorialApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .onAppear {
+                    LocationService.shared.requestPermission()
+                }
         }
     }
 }
+

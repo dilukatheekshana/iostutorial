@@ -67,12 +67,12 @@ struct QuizResultView: View {
 
                 }
 
-                Button("Back to Home") {
-
-                    dismiss()
-
-                }
-                .foregroundStyle(.gray)
+//                Button("Back to Home") {
+//
+//                    MainTabView()
+//
+//                }
+//                .foregroundStyle(.gray)
 
             }
             .padding()

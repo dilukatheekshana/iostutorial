@@ -163,8 +163,6 @@ class QuizRushViewModel: ObservableObject {
                     score: score
                 )
             )
-            
-            print(GameSessionService.shared.loadSessions())
         }
 
     }

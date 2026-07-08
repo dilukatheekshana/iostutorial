@@ -120,6 +120,7 @@ struct QuizSetupView: View {
 
         }
 //        .navigationBarHidden(true)
+        .toolbar(.hidden, for: .tabBar)
 
     }
 

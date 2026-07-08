@@ -5,26 +5,40 @@
 //  Created by Student3 on 2026-07-08.
 //
 
+
+
+
 import SwiftUI
 
 struct MapView: View {
+
     var body: some View {
+
         NavigationStack {
-            VStack {
+
+            VStack(spacing: 20) {
+
                 Image(systemName: "map.fill")
-                    .font(.system(size: 60))
+                    .font(.system(size: 70))
                     .foregroundStyle(.green)
 
-                Text("Map")
+                Text("Map Feature")
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
-                Text("Coming Soon")
+                Text("Location permission granted ✅")
                     .foregroundStyle(.secondary)
+
             }
             .navigationTitle("Map")
+            .onAppear {
+                LocationService.shared.refreshLocation()
+            }
+
         }
+
     }
+
 }
 
 #Preview {
