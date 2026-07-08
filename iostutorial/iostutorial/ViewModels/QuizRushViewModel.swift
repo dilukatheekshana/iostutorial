@@ -155,7 +155,16 @@ class QuizRushViewModel: ObservableObject {
         } else {
 
             gameFinished = true
-
+            
+            //implement game session service
+            GameSessionService.shared.addSession(
+                GameSession(
+                    mode: .quizRush,
+                    score: score
+                )
+            )
+            
+            print(GameSessionService.shared.loadSessions())
         }
 
     }
@@ -182,7 +191,7 @@ class QuizRushViewModel: ObservableObject {
 
         state = .idle
         
-        correctAnswers = 0
+        correctAnswers = 0        
 
     }
     

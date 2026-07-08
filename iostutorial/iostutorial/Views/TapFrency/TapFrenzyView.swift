@@ -34,16 +34,9 @@ struct TapFrenzyView: View {
 
             ZStack {
 
-                LinearGradient(
-                    colors: [
-                        .white,
-                        .white,
-                        .black
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+                // MARK: - Background
+                Color.black
+                    .ignoresSafeArea()
 
                 if !gameOver {
 
@@ -53,20 +46,33 @@ struct TapFrenzyView: View {
                         Text("Tap Frenzy")
                             .font(.largeTitle)
                             .fontWeight(.bold)
+                            .foregroundStyle(.white)
                             .padding(.top, 40)
 
-                        // Score + Timer Row
+                        // Score + Timer Row (Styled like QuizRush)
                         HStack {
 
-                            Text("Score: \(score)")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                            VStack(alignment: .leading) {
+                                Text("Score")
+                                    .foregroundStyle(.gray)
+                                
+                                Text("\(score)")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.yellow)
+                            }
 
                             Spacer()
 
-                            Text("Time: \(timeRemaining)")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                            VStack(alignment: .trailing) {
+                                Text("Time")
+                                    .foregroundStyle(.gray)
+                                
+                                Text("\(timeRemaining)")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.orange)
+                            }
                         }
                         .padding(.horizontal, 30)
                         .padding(.top, 10)
@@ -83,12 +89,12 @@ struct TapFrenzyView: View {
                         Text("TAP")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .frame(
                                 width: buttonSize,
                                 height: buttonSize
                             )
-                            .background(Color.gray)
+                            .background(Color.purple)
                             .clipShape(Circle())
                     }
                     .position(
@@ -114,26 +120,33 @@ struct TapFrenzyView: View {
 
                 } else {
 
-                    VStack(spacing: 20) {
+                    VStack(spacing: 25) {
 
                         Text("Game Over!")
                             .font(.largeTitle)
                             .fontWeight(.bold)
+                            .foregroundStyle(.white)
 
-                        Text("Final Score: \(score)")
-                            .font(.title)
+                        VStack(spacing: 10) {
+                            Text("Final Score: \(score)")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.yellow)
 
-                        Text("High Score: \(highScore)")
-                            .font(.title2)
+                            Text("High Score: \(highScore)")
+                                .font(.title2)
+                                .foregroundStyle(.orange)
+                        }
 
                         Button("Play Again") {
                             restartGame(geometry: geometry)
                         }
+                        .font(.headline)
                         .padding()
                         .frame(width: 180)
-                        .background(Color.gray)
+                        .background(Color.purple)
                         .foregroundColor(.white)
-                        .cornerRadius(12)
+                        .cornerRadius(14)
                     }
                 }
             }
@@ -154,6 +167,16 @@ struct TapFrenzyView: View {
                     } else {
 
                         gameOver = true
+                        
+                        //implement game session service
+                         GameSessionService.shared.addSession(
+                             GameSession(
+                                 mode: .tapFrenzy,
+                                 score: score
+                             )
+                         )
+                        
+                         print(GameSessionService.shared.loadSessions())
 
                         if score > highScore {
                             highScore = score

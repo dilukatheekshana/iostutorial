@@ -15,6 +15,19 @@ struct QuizSetupView: View {
         "medium",
         "hard"
     ]
+    
+    // MARK: - Custom Initialization for Picker Colors
+        init() {
+            // 1. Set the unselected text color to white
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor.white], for: .normal
+            )
+            
+            // 2. Set the selected text color to black
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor.black], for: .selected
+            )
+        }
 
     var body: some View {
 
@@ -55,6 +68,7 @@ struct QuizSetupView: View {
 
                     }
                     .pickerStyle(.menu)
+                    .tint(Color.purple)
 
                 }
 
@@ -65,7 +79,7 @@ struct QuizSetupView: View {
                         ForEach(difficulties, id: \.self) { difficulty in
 
                             Text(difficulty.capitalized)
-                                .tag(difficulty)
+                                .tag(difficulty)  
 
                         }
 
@@ -92,7 +106,7 @@ struct QuizSetupView: View {
                     QuizHighScoreView(viewModel: viewModel)
                 } label: {
                     Text("View High Scores")
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.white)
                 }
 
                 Spacer()

@@ -33,101 +33,134 @@ struct LightItUpView: View {
 
     var body: some View {
 
-        VStack {
+        ZStack {
             
-            if !gameOver {
+            // MARK: - Background
+            Color.black
+                .ignoresSafeArea()
+            
+            VStack {
                 
-                Text("Light It Up")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                
-                HStack {
+                if !gameOver {
+                    
+                    Text("Light It Up")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                        .padding(.top)
+                    
+                    // Score & Time Row (Styled like QuizRush)
+                    HStack {
+                        
+                        VStack(alignment: .leading) {
+                            Text("Score")
+                                .foregroundStyle(.gray)
+                            
+                            Text("\(score)")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.yellow)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .trailing) {
+                            Text("Time")
+                                .foregroundStyle(.gray)
+                            
+                            Text("\(timeRemaining)")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.orange)
+                        }
+                    }
+                    .padding(.horizontal, 30)
+                    .padding(.top, 10)
+                    
+                    Spacer()
 
-                    Text("Score: \(score)")
-                        .font(.title3)
+                    Text("Level \(currentLevel)")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding(.bottom)
+
+                    LazyVGrid(
+                        columns: Array(
+                            repeating: GridItem(.flexible()),
+                            count: gridColumns
+                        ),
+                        spacing: 15
+                    ) {
+
+                        ForEach(cards.indices, id: \.self) { index in
+
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(
+                                    cards[index].isLit
+                                    ? levelColor
+                                    : Color.gray.opacity(0.3)
+                                )
+                                .frame(height: 100)
+                                .scaleEffect(
+                                    cards[index].isLit ? 1.1 : 1.0
+                                )
+                                .animation(
+                                    .easeInOut,
+                                    value: cards[index].isLit
+                                )
+                                .onTapGesture {
+
+                                    if cards[index].isLit {
+
+                                        score += 1
+
+                                        cards[index].isLit = false
+
+                                    } else {
+
+                                        score = max(0, score - 1)
+                                    }
+                                }
+                        }
+                    }
+                    .padding()
+                    Spacer()
+
+                } else {
 
                     Spacer()
 
-                    Text("Time: \(timeRemaining)")
-                        .font(.title3)
-                }
-                .padding(30)
-                Spacer()
+                    VStack(spacing: 25) {
 
-                Text("Level \(currentLevel)")
-                    .font(.headline)
-                    .padding(.bottom)
+                        Text("Game Over!")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
+                        
+                        VStack(spacing: 10) {
+                            Text("Final Score: \(score)")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.yellow)
+                            
+                            Text("High Score: \(highScore)")
+                                .font(.title2)
+                                .foregroundStyle(.orange)
+                        }
 
-                LazyVGrid(
-                    columns: Array(
-                        repeating: GridItem(.flexible()),
-                        count: gridColumns
-                    ),
-                    spacing: 15
-                ) {
-
-                    ForEach(cards.indices, id: \.self) { index in
-
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(
-                                cards[index].isLit
-                                ? levelColor
-                                : Color.gray.opacity(0.4)
-                            )
-                            .frame(height: 100)
-                            .scaleEffect(
-                                cards[index].isLit ? 1.1 : 1.0
-                            )
-                            .animation(
-                                .easeInOut,
-                                value: cards[index].isLit
-                            )
-                            .onTapGesture {
-
-                                if cards[index].isLit {
-
-                                    score += 1
-
-                                    cards[index].isLit = false
-
-                                } else {
-
-                                    score = max(0, score - 1)
-                                }
-                            }
+                        Button("Play Again") {
+                            restartGame()
+                        }
+                        .font(.headline)
+                        .padding()
+                        .frame(width: 180)
+                        .background(Color.purple)
+                        .foregroundColor(.white)
+                        .cornerRadius(14)
                     }
+
+                    Spacer()
                 }
-                .padding()
-                Spacer()
-
-            } else {
-
-                Spacer()
-
-                VStack(spacing: 20) {
-
-                    Text("Game Over")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-
-                    Text("Final Score: \(score)")
-                        .font(.title2)
-
-                    Text("High Score: \(highScore)")
-                        .font(.title3)
-
-                    Button("Play Again") {
-                        restartGame()
-                    }
-                    .padding()
-                    .frame(width: 180)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-                }
-
-                Spacer()
             }
         }
         .onAppear {
@@ -146,6 +179,16 @@ struct LightItUpView: View {
                 if timeRemaining <= 0 {
 
                     gameOver = true
+                
+                    //implement game session service
+                    GameSessionService.shared.addSession(
+                        GameSession(
+                            mode: .lightItUp,
+                            score: score
+                        )
+                    )
+                    
+                    print(GameSessionService.shared.loadSessions())
 
                     if score > highScore {
 
