@@ -5,40 +5,86 @@
 //  Created by Student3 on 2026-07-08.
 //
 
-
-
-
 import SwiftUI
+import MapKit
 
 struct MapView: View {
+
+    @StateObject private var viewModel = MapViewModel()
+    @State private var camera: MapCameraPosition = .automatic
 
     var body: some View {
 
         NavigationStack {
+            
+            Group {
+                if viewModel.sessions.isEmpty {
+                    
+                    ContentUnavailableView(
+                        "No Locations Yet",
+                        systemImage: "map",
+                        description: Text("Finish a game to record your first location.")
+                    )
+                    
+                } else {
 
-            VStack(spacing: 20) {
-
-                Image(systemName: "map.fill")
-                    .font(.system(size: 70))
-                    .foregroundStyle(.green)
-
-                Text("Map Feature")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-
-                Text("Location permission granted ✅")
-                    .foregroundStyle(.secondary)
-
+                    Map(position: $camera) {
+                        
+                        ForEach(viewModel.sessions) { session in
+                            //                    Marker(
+                            //                        "\(session.mode.rawValue) (\(session.score))",
+                            //                        coordinate: CLLocationCoordinate2D(
+                            //                            latitude: session.latitude,
+                            //                            longitude: session.longitude
+                            //                        )
+                            //                    )
+                            Annotation(
+                                session.mode.rawValue,
+                                coordinate: CLLocationCoordinate2D(
+                                    latitude: session.latitude,
+                                    longitude: session.longitude
+                                )
+                            ) {
+                                GameMapAnnotation(session: session)
+                                    .onTapGesture {
+                                        viewModel.selectedSession = session
+                                    }
+                            }
+                        }
+                    }
+                }
             }
-            .navigationTitle("Map")
+            
+            .navigationTitle("Game Map")
             .onAppear {
+                
+                viewModel.loadSessions()
                 LocationService.shared.refreshLocation()
+                
+                if let location = LocationService.shared.currentLocation {
+                    camera = .region(
+                        MKCoordinateRegion(
+                            center: location.coordinate,
+                            span: MKCoordinateSpan(
+                                latitudeDelta: 0.05,
+                                longitudeDelta: 0.05
+                            )
+                        )
+                    )
+                }
             }
-
+            .onReceive(
+                NotificationCenter.default.publisher(
+                    for: .gameSessionsUpdated
+                )
+            ) { _ in
+                viewModel.loadSessions()
+            }
+            .sheet(item: $viewModel.selectedSession) { session in
+                SessionDetailView(session: session)
+            }
         }
-
     }
-
 }
 
 #Preview {

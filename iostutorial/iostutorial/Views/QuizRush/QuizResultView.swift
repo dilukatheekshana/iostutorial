@@ -73,6 +73,18 @@ struct QuizResultView: View {
 //
 //                }
 //                .foregroundStyle(.gray)
+                ShareLink(
+                    item: "🧠 I scored \(viewModel.score) points in Quiz Rush on PlayHub!"
+                ) {
+
+                    Label("Share Score", systemImage: "square.and.arrow.up")
+                        .frame(width: 220)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(14)
+
+                }
 
             }
             .padding()
