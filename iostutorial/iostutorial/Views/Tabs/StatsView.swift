@@ -35,25 +35,18 @@ struct StatsView: View {
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
 
-//                        ForEach(viewModel.gameStatistics, id: \.mode) {
-//
-//                            GameStatisticsCard(statistics: $0)
-//
-//                        }
                         if viewModel.gameStatistics.isEmpty {
-                           ContentUnavailableView(
-                            "No Statistics",
-                            systemImage: "chart.bar.xaxis",
-                            description: Text("Play a game to begin tracking your progress.")
+                            ContentUnavailableView(
+                                "No Statistics",
+                                systemImage: "chart.bar.xaxis",
+                                description: Text("Play a game to begin tracking your progress.")
                             )
                         } else {
-                                                    
-                          ForEach(viewModel.gameStatistics, id: \.mode) {
-
-                          GameStatisticsCard(statistics: $0)
-
-                          }
-                       }
+                                                                            
+                            ForEach(viewModel.gameStatistics, id: \.mode) {
+                                GameStatisticsCard(statistics: $0)
+                            }
+                        }
                     }
                     
                     LazyVGrid(
@@ -72,20 +65,6 @@ struct StatsView: View {
                         )
 
                         ScoreBadge(
-                            title: "Highest Score",
-                            value: "\(viewModel.highestScore)",
-                            icon: "trophy.fill",
-                            color: .yellow
-                        )
-
-                        ScoreBadge(
-                            title: "Average Score",
-                            value: String(format: "%.1f", viewModel.averageScore),
-                            icon: "chart.bar.fill",
-                            color: .green
-                        )
-
-                        ScoreBadge(
                             title: "Game Modes",
                             value: "\(GameMode.allCases.count)",
                             icon: "square.grid.2x2.fill",
@@ -99,34 +78,109 @@ struct StatsView: View {
 
                     VStack(alignment: .leading, spacing: 18) {
 
-                        Text("Highest Score by Game")
+                        Text("Score Progress")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
 
                         Chart {
 
-                            ForEach(viewModel.gameStatistics, id: \.mode) { stat in
 
-                                BarMark(
-                                    x: .value("Game", stat.mode.rawValue),
-                                    y: .value("Score", stat.highestScore)
+                            ForEach(Array(viewModel.sessions(for: .tapFrenzy).enumerated()), id: \.element.id) { index, session in
+
+                                LineMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score),
+                                    series: .value("Game Mode", "Tap Frenzy")
                                 )
-                                .foregroundStyle(chartColor(for: stat.mode))
+                                .foregroundStyle(.red)
+                                .lineStyle(StrokeStyle(lineWidth: 3))
+                                .interpolationMethod(.catmullRom)
 
+                                PointMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score)
+                                )
+                                .foregroundStyle(.red)
+                            }
+
+ 
+                            ForEach(Array(viewModel.sessions(for: .lightItUp).enumerated()), id: \.element.id) { index, session in
+
+                                LineMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score),
+                                    series: .value("Game Mode", "Light It Up")
+                                )
+                                .foregroundStyle(.yellow)
+                                .lineStyle(StrokeStyle(lineWidth: 3))
+                                .interpolationMethod(.catmullRom)
+
+                                PointMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score)
+                                )
+                                .foregroundStyle(.yellow)
+                            }
+
+
+                            ForEach(Array(viewModel.sessions(for: .quizRush).enumerated()), id: \.element.id) { index, session in
+
+                                LineMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score),
+                                    series: .value("Game Mode", "Quiz Rush")
+                                )
+                                .foregroundStyle(.blue)
+                                .lineStyle(StrokeStyle(lineWidth: 3))
+                                .interpolationMethod(.catmullRom)
+
+                                PointMark(
+                                    x: .value("Game Count", index + 1),
+                                    y: .value("Score", session.score)
+                                )
+                                .foregroundStyle(.blue)
                             }
 
                         }
-                        .frame(height: 250)
-                        .chartYAxis {
-
-                            AxisMarks(position: .leading)
-
-                        }
+                        .frame(height: 300)
+                        .chartXScale(range: .plotDimension(padding: 20))
                         .chartXAxis {
-
-                            AxisMarks()
-
+                            AxisMarks(values: .automatic) { _ in
+                                AxisGridLine()
+                                AxisValueLabel()
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .chartYAxis {
+                            AxisMarks(position: .leading) { _ in
+                                AxisGridLine()
+                                AxisValueLabel()
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .chartXAxisLabel {
+                            Text("Game Count")
+                                .foregroundStyle(.white)
+                        }
+                        .chartYAxisLabel {
+                            Text("Score")
+                                .foregroundStyle(.white)
+                        }
+                        .chartLegend(position: .top) {
+                            HStack(spacing: 20) {
+                                Label("Tap Frenzy", systemImage: "line.diagonal")
+                                    .foregroundStyle(.red)
+                                Label("Light It Up", systemImage: "line.diagonal")
+                                    .foregroundStyle(.yellow)
+                                Label("Quiz Rush", systemImage: "line.diagonal")
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                        .chartPlotStyle { plotArea in
+                            plotArea
+                                .background(Color.white.opacity(0.05))
+                                .cornerRadius(12)
                         }
 
                     }
@@ -152,15 +206,12 @@ struct StatsView: View {
                         } else {
 
                             ForEach(viewModel.recentSessions) { session in
-
                                 RecentGameCard(session: session)
-
                             }
 
                         }
 
                     }
-                    
                     
 
                     Spacer(minLength: 30)
@@ -190,24 +241,16 @@ struct StatsView: View {
 }
 
 #Preview {
-
     StatsView()
-
 }
 
 private func chartColor(for mode: GameMode) -> Color {
-
     switch mode {
-
     case .tapFrenzy:
         return .red
-
     case .lightItUp:
         return .yellow
-
     case .quizRush:
         return .blue
-
     }
-
 }

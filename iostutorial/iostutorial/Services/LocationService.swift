@@ -38,6 +38,7 @@ final class LocationService: NSObject, ObservableObject {
 
 }
 
+
 extension LocationService: CLLocationManagerDelegate {
 
     func locationManager(
