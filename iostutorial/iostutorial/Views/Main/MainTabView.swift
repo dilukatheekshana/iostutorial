@@ -7,37 +7,47 @@
 
 import SwiftUI
 
-struct MainTabView: View {
+struct MainTabView: View
+{
 
-    var body: some View {
+    var body: some View
+    {
 
-        TabView {
+        TabView
+        {
 
-            NavigationStack {
+            NavigationStack
+            {
                 HomeView()
             }
-            .tabItem {
-                Label("Home", systemImage: "house.fill")
-            }
+                 .tabItem
+                {
+                     Label("Home", systemImage: "house.fill")
+                }
 
             StatsView()
-                .tabItem {
+                .tabItem
+                {
                     Label("Stats", systemImage: "chart.bar.fill")
                 }
 
             MapView()
-                .tabItem {
+                .tabItem
+                {
                     Label("Map", systemImage: "map.fill")
                 }
 
             SettingsView()
-                .tabItem {
+                .tabItem
+                {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
         }
     }
 }
 
-#Preview {
+#Preview
+{
+    
     MainTabView()
 }

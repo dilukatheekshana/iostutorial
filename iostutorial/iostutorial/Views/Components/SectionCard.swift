@@ -1,15 +1,16 @@
 import SwiftUI
 
-struct SectionCard<Content: View>: View {
+struct SectionCard<Content: View>: View
+{
 
     let title: String
-
     @ViewBuilder
     let content: Content
 
-    var body: some View {
-
-        VStack(alignment: .leading, spacing: 12) {
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 12)
+        {
 
             Text(title)
                 .font(.headline)
@@ -25,18 +26,17 @@ struct SectionCard<Content: View>: View {
     }
 }
 
-#Preview {
-    ZStack {
-
+#Preview
+{
+    ZStack
+    {
         Color.black.ignoresSafeArea()
 
-        SectionCard(title: "Category") {
-
+        SectionCard(title: "Category")
+        {
             Text("Science")
                 .foregroundStyle(.white)
-
         }
         .padding()
-
     }
 }

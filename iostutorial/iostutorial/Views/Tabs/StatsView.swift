@@ -8,17 +8,22 @@
 import SwiftUI
 import Charts
 
-struct StatsView: View {
+struct StatsView: View
+{
 
     @StateObject private var viewModel = StatsViewModel()
 
-    var body: some View {
+    var body: some View
+    {
 
-        NavigationStack {
+        NavigationStack
+        {
 
-            ScrollView {
+            ScrollView
+            {
 
-                VStack(spacing: 25) {
+                VStack(spacing: 25)
+                {
 
                     Text("Statistics")
                         .font(.largeTitle)
@@ -28,22 +33,27 @@ struct StatsView: View {
                     Divider()
                         .background(Color.gray)
 
-                    VStack(alignment: .leading, spacing: 18) {
+                    VStack(alignment: .leading, spacing: 18)
+                    {
 
                         Text("Performance by Game")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
 
-                        if viewModel.gameStatistics.isEmpty {
+                        if viewModel.gameStatistics.isEmpty
+                        {
                             ContentUnavailableView(
                                 "No Statistics",
                                 systemImage: "chart.bar.xaxis",
                                 description: Text("Play a game to begin tracking your progress.")
                             )
-                        } else {
+                        }
+                        else
+                        {
                                                                             
-                            ForEach(viewModel.gameStatistics, id: \.mode) {
+                            ForEach(viewModel.gameStatistics, id: \.mode)
+                            {
                                 GameStatisticsCard(statistics: $0)
                             }
                         }
@@ -55,20 +65,21 @@ struct StatsView: View {
                             GridItem(.flexible())
                         ],
                         spacing: 18
-                    ) {
+                    )
+                    {
 
                         ScoreBadge(
                             title: "Games Played",
                             value: "\(viewModel.totalGames)",
                             icon: "gamecontroller.fill",
-                            color: .blue
+                            color: .yellow
                         )
 
                         ScoreBadge(
                             title: "Game Modes",
                             value: "\(GameMode.allCases.count)",
                             icon: "square.grid.2x2.fill",
-                            color: .purple
+                            color: .yellow
                         )
 
                     }
@@ -93,7 +104,7 @@ struct StatsView: View {
                                     y: .value("Score", session.score),
                                     series: .value("Game Mode", "Tap Frenzy")
                                 )
-                                .foregroundStyle(.red)
+                                .foregroundStyle(.blue)
                                 .lineStyle(StrokeStyle(lineWidth: 3))
                                 .interpolationMethod(.catmullRom)
 
@@ -101,7 +112,7 @@ struct StatsView: View {
                                     x: .value("Game Count", index + 1),
                                     y: .value("Score", session.score)
                                 )
-                                .foregroundStyle(.red)
+                                .foregroundStyle(.blue)
                             }
 
  
@@ -112,7 +123,7 @@ struct StatsView: View {
                                     y: .value("Score", session.score),
                                     series: .value("Game Mode", "Light It Up")
                                 )
-                                .foregroundStyle(.yellow)
+                                .foregroundStyle(.green)
                                 .lineStyle(StrokeStyle(lineWidth: 3))
                                 .interpolationMethod(.catmullRom)
 
@@ -120,7 +131,7 @@ struct StatsView: View {
                                     x: .value("Game Count", index + 1),
                                     y: .value("Score", session.score)
                                 )
-                                .foregroundStyle(.yellow)
+                                .foregroundStyle(.green)
                             }
 
 
@@ -131,7 +142,7 @@ struct StatsView: View {
                                     y: .value("Score", session.score),
                                     series: .value("Game Mode", "Quiz Rush")
                                 )
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.indigo)
                                 .lineStyle(StrokeStyle(lineWidth: 3))
                                 .interpolationMethod(.catmullRom)
 
@@ -139,45 +150,56 @@ struct StatsView: View {
                                     x: .value("Game Count", index + 1),
                                     y: .value("Score", session.score)
                                 )
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.indigo)
                             }
 
                         }
                         .frame(height: 300)
                         .chartXScale(range: .plotDimension(padding: 20))
                         .chartXAxis {
-                            AxisMarks(values: .automatic) { _ in
+                            AxisMarks(values: .automatic)
+                            {
+                                _ in
                                 AxisGridLine()
                                 AxisValueLabel()
                                     .foregroundStyle(.white)
                             }
                         }
-                        .chartYAxis {
-                            AxisMarks(position: .leading) { _ in
+                        .chartYAxis
+                        {
+                            AxisMarks(position: .leading)
+                            {
+                                _ in
                                 AxisGridLine()
                                 AxisValueLabel()
                                     .foregroundStyle(.white)
                             }
                         }
-                        .chartXAxisLabel {
+                        .chartXAxisLabel
+                        {
                             Text("Game Count")
                                 .foregroundStyle(.white)
                         }
-                        .chartYAxisLabel {
+                        .chartYAxisLabel
+                        {
                             Text("Score")
                                 .foregroundStyle(.white)
                         }
-                        .chartLegend(position: .top) {
-                            HStack(spacing: 20) {
+                        .chartLegend(position: .top)
+                        {
+                            HStack(spacing: 20)
+                            {
                                 Label("Tap Frenzy", systemImage: "line.diagonal")
-                                    .foregroundStyle(.red)
-                                Label("Light It Up", systemImage: "line.diagonal")
-                                    .foregroundStyle(.yellow)
-                                Label("Quiz Rush", systemImage: "line.diagonal")
                                     .foregroundStyle(.blue)
+                                Label("Light It Up", systemImage: "line.diagonal")
+                                    .foregroundStyle(.green)
+                                Label("Quiz Rush", systemImage: "line.diagonal")
+                                    .foregroundStyle(.indigo)
                             }
                         }
-                        .chartPlotStyle { plotArea in
+                        .chartPlotStyle
+                        {
+                            plotArea in
                             plotArea
                                 .background(Color.white.opacity(0.05))
                                 .cornerRadius(12)
@@ -188,14 +210,16 @@ struct StatsView: View {
                     Divider()
                         .background(Color.gray)
 
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 16)
+                    {
 
                         Text("Recent Games")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
 
-                        if viewModel.recentSessions.isEmpty {
+                        if viewModel.recentSessions.isEmpty
+                        {
 
                             ContentUnavailableView(
                                 "No Games Played",
@@ -203,9 +227,13 @@ struct StatsView: View {
                                 description: Text("Play one of the games to start tracking your progress.")
                             )
 
-                        } else {
+                        }
+                        else
+                        {
 
-                            ForEach(viewModel.recentSessions) { session in
+                            ForEach(viewModel.recentSessions)
+                            {
+                                session in
                                 RecentGameCard(session: session)
                             }
 
@@ -223,14 +251,17 @@ struct StatsView: View {
             .background(Color.black)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
+            .onAppear
+            {
                 viewModel.loadSessions()
             }
             .onReceive(
                 NotificationCenter.default.publisher(
                     for: .gameSessionsUpdated
                 )
-            ) { _ in
+            )
+            {
+                _ in
                 viewModel.loadSessions()
             }
 
@@ -240,17 +271,20 @@ struct StatsView: View {
 
 }
 
-#Preview {
+#Preview
+{
     StatsView()
 }
 
-private func chartColor(for mode: GameMode) -> Color {
-    switch mode {
+private func chartColor(for mode: GameMode) -> Color
+{
+    switch mode
+    {
     case .tapFrenzy:
-        return .red
-    case .lightItUp:
-        return .yellow
-    case .quizRush:
         return .blue
+    case .lightItUp:
+        return .green
+    case .quizRush:
+        return .indigo
     }
 }

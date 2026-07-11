@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct GameMapAnnotation: View {
+struct GameMapAnnotation: View
+{
 
     let session: GameSession
 
-    var body: some View {
-
-        VStack(spacing: 4) {
-
+    var body: some View
+    {
+        VStack(spacing: 4)
+        {
             Image(systemName: session.mode.icon)
                 .font(.title2)
                 .foregroundStyle(iconColor)
@@ -22,26 +23,22 @@ struct GameMapAnnotation: View {
             Image(systemName: "mappin.circle.fill")
                 .font(.title)
                 .foregroundStyle(iconColor)
-
         }
-
     }
 
-    private var iconColor: Color {
-
-        switch session.mode {
-
+    private var iconColor: Color
+    {
+        switch session.mode
+        {
         case .tapFrenzy:
-            return .red
-
-        case .lightItUp:
-            return .yellow
-
-        case .quizRush:
             return .blue
 
-        }
+        case .lightItUp:
+            return .green
 
+        case .quizRush:
+            return .indigo
+        }
     }
 
 }

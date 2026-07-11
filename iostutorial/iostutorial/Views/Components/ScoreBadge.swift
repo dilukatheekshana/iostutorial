@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-struct ScoreBadge: View {
+struct ScoreBadge: View
+{
 
     let title: String
     let value: String
     let icon: String
     let color: Color
 
-    var body: some View {
-
-        VStack(spacing: 12) {
-
+    var body: some View
+    {
+        VStack(spacing: 12)
+        {
             Image(systemName: icon)
                 .font(.system(size: 28))
                 .foregroundStyle(color)
@@ -39,13 +40,13 @@ struct ScoreBadge: View {
     }
 }
 
-#Preview {
-
-    ZStack {
-
+#Preview
+{
+    ZStack
+    {
         Color.black
             .ignoresSafeArea()
-
+        
         ScoreBadge(
             title: "Highest Score",
             value: "48",
@@ -53,6 +54,5 @@ struct ScoreBadge: View {
             color: .yellow
         )
         .padding()
-
     }
 }

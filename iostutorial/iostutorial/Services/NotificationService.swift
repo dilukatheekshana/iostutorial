@@ -8,20 +8,22 @@
 import Foundation
 import UserNotifications
 
-final class NotificationService {
+final class NotificationService
+{
 
     static let shared = NotificationService()
 
     private init() {}
 
-    func requestPermission() {
-
+    func requestPermission()
+    {
         UNUserNotificationCenter.current()
             .requestAuthorization(
                 options: [.alert, .badge, .sound]
             ) { granted, error in
 
-                if let error = error {
+                if let error = error
+                {
                     print(error.localizedDescription)
                 }
 
@@ -29,8 +31,8 @@ final class NotificationService {
 
     }
 
-    func scheduleDailyNotification(at date: Date) {
-
+    func scheduleDailyNotification(at date: Date)
+    {
         let calendar = Calendar.current
 
         let components = calendar.dateComponents(
@@ -67,8 +69,8 @@ final class NotificationService {
 
     }
 
-    func cancelNotifications() {
-
+    func cancelNotifications()
+    {
         UNUserNotificationCenter.current()
             .removePendingNotificationRequests(
                 withIdentifiers: ["dailyChallenge"]

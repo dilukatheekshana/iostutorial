@@ -2,21 +2,23 @@ import Foundation
 
 struct TriviaAPIService {
 
-    func fetchQuestions(category: Int?, difficulty: String?) async throws -> [TriviaQuestion] {
+    func fetchQuestions(category: Int?, difficulty: String?) async throws -> [TriviaQuestion]
+    {
 
         var urlString = "https://opentdb.com/api.php?amount=10&type=multiple"
 
-        // Add category if selected
-        if let category = category {
+        if let category = category
+        {
             urlString += "&category=\(category)"
         }
 
-        // Add difficulty if selected
-        if let difficulty = difficulty {
+        if let difficulty = difficulty
+        {
             urlString += "&difficulty=\(difficulty.lowercased())"
         }
 
-        guard let url = URL(string: urlString) else {
+        guard let url = URL(string: urlString) else
+        {
             throw URLError(.badURL)
         }
 
@@ -27,6 +29,7 @@ struct TriviaAPIService {
         let response = try decoder.decode(TriviaResponse.self, from: data)
 
         return response.results
+        
     }
 
 }

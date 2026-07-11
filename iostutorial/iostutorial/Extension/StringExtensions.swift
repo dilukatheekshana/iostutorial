@@ -1,9 +1,10 @@
 import Foundation
 
-extension String {
+extension String
+{
 
-    var htmlDecoded: String {
-
+    var htmlDecoded: String
+    {
         self
             .replacingOccurrences(of: "&quot;", with: "\"")
             .replacingOccurrences(of: "&#039;", with: "'")

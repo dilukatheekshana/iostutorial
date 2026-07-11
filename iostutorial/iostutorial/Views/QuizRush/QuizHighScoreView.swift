@@ -1,29 +1,41 @@
 import SwiftUI
 
-struct QuizHighScoreView: View {
+struct QuizHighScoreView: View
+{
 
     @ObservedObject var viewModel: QuizRushViewModel
 
     @Environment(\.dismiss) private var dismiss
 
-    var body: some View {
+    var body: some View
+    {
 
-        ZStack {
+        ZStack
+        {
 
             Color.black.ignoresSafeArea()
 
-            VStack(spacing: 30) {
+            VStack(spacing: 30)
+            {
 
                 Spacer()
 
-                Text("🏆 High Scores")
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundStyle(.white)
+                ZStack
+                {
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color.indigo)
+                        .frame(width: 100, height: 100)
+                        
+                    Image(systemName: "trophy.fill")
+                        .font(Font.system(size: 60, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.black)
+                }
 
-                VStack(spacing: 20) {
+                VStack(spacing: 20)
+                {
 
-                    VStack {
+                    VStack
+                    {
 
                         Text("Best Score")
                             .foregroundStyle(.gray)
@@ -35,25 +47,12 @@ struct QuizHighScoreView: View {
 
                     }
 
-                    Divider().background(.white.opacity(0.3))
-
-                    VStack {
-
-                        Text("Last Score")
-                            .foregroundStyle(.gray)
-
-                        Text("\(viewModel.score)")
-                            .font(.system(size: 40))
-                            .bold()
-                            .foregroundStyle(.white)
-
-                    }
-
                 }
 
                 Spacer()
 
-                PrimaryButton(title: "Back") {
+                PrimaryButton(title: "Back")
+                {
                     dismiss()
                 }
 

@@ -10,7 +10,8 @@ import SwiftUI
 internal import Combine
 
 @MainActor
-final class SettingsViewModel: ObservableObject {
+final class SettingsViewModel: ObservableObject
+{
 
     @AppStorage("notificationsEnabled")
     var notificationsEnabled = false
@@ -18,43 +19,44 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("dailyChallengeTime")
     private var storedTime = Date().timeIntervalSince1970
 
-    var challengeTime: Date {
-        get {
+    var challengeTime: Date
+    {
+        get
+        {
             Date(timeIntervalSince1970: storedTime)
         }
-        set {
+        set
+        {
             storedTime = newValue.timeIntervalSince1970
 
-            if notificationsEnabled {
+            if notificationsEnabled
+            {
                 NotificationService.shared.scheduleDailyNotification(at: newValue)
             }
         }
     }
 
-    func toggleNotifications() {
-
+    func toggleNotifications()
+    {
         notificationsEnabled.toggle()
 
-        if notificationsEnabled {
-
+        if notificationsEnabled
+        {
             NotificationService.shared.requestPermission()
 
             NotificationService.shared.scheduleDailyNotification(
                 at: challengeTime
             )
-
-        } else {
-
-            NotificationService.shared.cancelNotifications()
-
         }
-
+        else
+        {
+            NotificationService.shared.cancelNotifications()
+        }
     }
 
-    func resetStatistics() {
-
+    func resetStatistics()
+    {
         GameSessionService.shared.deleteAllSessions()
-
     }
 
 }

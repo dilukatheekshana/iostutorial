@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum QuizViewState {
+enum QuizViewState
+{
     case idle
     case loading
     case loaded

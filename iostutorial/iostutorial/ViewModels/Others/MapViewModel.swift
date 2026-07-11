@@ -10,16 +10,19 @@ import MapKit
 internal import Combine
 
 @MainActor
-final class MapViewModel: ObservableObject {
+final class MapViewModel: ObservableObject
+{
 
     @Published var sessions: [GameSession] = []
     @Published var selectedSession: GameSession?
 
-    init() {
+    init()
+    {
         loadSessions()
     }
 
-    func loadSessions() {
+    func loadSessions()
+    {
         sessions = GameSessionService.shared.loadSessions()
     }
 

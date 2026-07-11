@@ -8,36 +8,35 @@
 import SwiftUI
 import MapKit
 
-struct MapView: View {
+struct MapView: View
+{
 
     @StateObject private var viewModel = MapViewModel()
     @State private var camera: MapCameraPosition = .automatic
 
-    var body: some View {
+    var body: some View
+    {
 
-        NavigationStack {
+        NavigationStack
+        {
             
-            Group {
-                if viewModel.sessions.isEmpty {
-                    
+            Group
+            {
+                if viewModel.sessions.isEmpty
+                {
                     ContentUnavailableView(
                         "No Locations Yet",
                         systemImage: "map",
                         description: Text("Finish a game to record your first location.")
                     )
-                    
-                } else {
-
-                    Map(position: $camera) {
-                        
-                        ForEach(viewModel.sessions) { session in
-                            //                    Marker(
-                            //                        "\(session.mode.rawValue) (\(session.score))",
-                            //                        coordinate: CLLocationCoordinate2D(
-                            //                            latitude: session.latitude,
-                            //                            longitude: session.longitude
-                            //                        )
-                            //                    )
+                }
+                else
+                {
+                    Map(position: $camera)
+                    {
+                        ForEach(viewModel.sessions)
+                        {
+                            session in
                             Annotation(
                                 session.mode.rawValue,
                                 coordinate: CLLocationCoordinate2D(
@@ -46,7 +45,8 @@ struct MapView: View {
                                 )
                             ) {
                                 GameMapAnnotation(session: session)
-                                    .onTapGesture {
+                                    .onTapGesture
+                                    {
                                         viewModel.selectedSession = session
                                     }
                             }
@@ -61,7 +61,8 @@ struct MapView: View {
                 viewModel.loadSessions()
                 LocationService.shared.refreshLocation()
                 
-                if let location = LocationService.shared.currentLocation {
+                if let location = LocationService.shared.currentLocation
+                {
                     camera = .region(
                         MKCoordinateRegion(
                             center: location.coordinate,
@@ -77,16 +78,21 @@ struct MapView: View {
                 NotificationCenter.default.publisher(
                     for: .gameSessionsUpdated
                 )
-            ) { _ in
+            )
+            {
+                _ in
                 viewModel.loadSessions()
             }
-            .sheet(item: $viewModel.selectedSession) { session in
+            .sheet(item: $viewModel.selectedSession)
+            {
+                session in
                 SessionDetailView(session: session)
             }
         }
     }
 }
 
-#Preview {
+#Preview
+{
     MapView()
 }

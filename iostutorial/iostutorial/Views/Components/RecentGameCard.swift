@@ -7,21 +7,24 @@
 
 import SwiftUI
 
-struct RecentGameCard: View {
+struct RecentGameCard: View
+{
 
     let session: GameSession
 
-    var body: some View {
-
-        HStack(spacing: 16) {
-
+    var body: some View
+    {
+        HStack(spacing: 16)
+        {
+            
             Image(systemName: session.mode.icon)
                 .font(.system(size: 24))
                 .foregroundStyle(iconColor)
 
                 .frame(width: 40)
 
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 6)
+            {
 
                 Text(session.mode.rawValue)
                     .font(.headline)
@@ -47,29 +50,28 @@ struct RecentGameCard: View {
         .cornerRadius(16)
     }
 
-    private var iconColor: Color {
-
-        switch session.mode {
-
+    private var iconColor: Color
+    {
+        switch session.mode
+        {
         case .tapFrenzy:
-            return .red
+            return .blue
 
         case .lightItUp:
-            return .yellow
+            return .green
 
         case .quizRush:
-            return .blue
+            return .indigo
         }
     }
 
 }
 
-#Preview {
-
-    ZStack {
-
+#Preview
+{
+    ZStack
+    {
         Color.black.ignoresSafeArea()
-
         RecentGameCard(
             session: GameSession(
                 mode: .quizRush,
@@ -77,7 +79,5 @@ struct RecentGameCard: View {
             )
         )
         .padding()
-
     }
-
 }

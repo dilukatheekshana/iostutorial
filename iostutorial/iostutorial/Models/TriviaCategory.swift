@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct TriviaCategory: Identifiable,Hashable {
+struct TriviaCategory: Identifiable,Hashable
+{
 
     let id: Int
     let name: String

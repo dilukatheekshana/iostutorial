@@ -7,11 +7,13 @@
 
 import Foundation
 
-struct TriviaResponse: Codable {
+struct TriviaResponse: Codable
+{
     let responseCode: Int
     let results: [TriviaQuestion]
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case responseCode = "response_code"
         case results
     }

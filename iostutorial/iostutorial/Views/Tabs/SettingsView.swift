@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingsView: View
+{
 
     @StateObject
     private var viewModel = SettingsViewModel()
@@ -15,23 +16,28 @@ struct SettingsView: View {
     @State
     private var showConfirmation = false
 
-    var body: some View {
+    var body: some View
+    {
 
-        NavigationStack {
+        NavigationStack
+        {
 
-            Form {
+            Form
+            {
 
-                // MARK: - Notifications
-
-                Section {
+                Section
+                {
 
                     Toggle(
                         "Daily Challenge",
                         isOn: Binding(
-                            get: {
+                            get:
+                            {
                                 viewModel.notificationsEnabled
                             },
-                            set: { _ in
+                            set:
+                            {
+                                _ in
                                 viewModel.toggleNotifications()
                             }
                         )
@@ -40,46 +46,42 @@ struct SettingsView: View {
                     DatePicker(
                         "Reminder Time",
                         selection: Binding(
-                            get: {
+                            get:
+                            {
                                 viewModel.challengeTime
                             },
-                            set: {
+                            set:
+                            {
                                 viewModel.challengeTime = $0
                             }
                         ),
                         displayedComponents: .hourAndMinute
                     )
 
-                } header: {
-
+                } header:
+                {
                     Text("Notifications")
-
                 }
 
-                // MARK: - Statistics
-
-                Section {
-
-                    Button(role: .destructive) {
-
+                Section
+                {
+                    Button(role: .destructive)
+                    {
                         showConfirmation = true
-
-                    } label: {
-
-                        Label(
+                    } label:
+                        {
+                            Label(
                             "Reset All Statistics",
                             systemImage: "trash"
                         )
 
                     }
 
-                } header: {
-
-                    Text("Statistics")
-
                 }
-
-                
+                header:
+                {
+                    Text("Statistics")
+                }
 
             }
             .scrollContentBackground(.hidden)
@@ -89,15 +91,15 @@ struct SettingsView: View {
             .confirmationDialog(
                 "Reset all statistics?",
                 isPresented: $showConfirmation
-            ) {
+            )
+            {
 
                 Button(
                     "Reset",
                     role: .destructive
-                ) {
-
+                )
+                {
                     viewModel.resetStatistics()
-
                 }
 
                 Button(
@@ -113,6 +115,7 @@ struct SettingsView: View {
 
 }
 
-#Preview {
+#Preview
+{
     SettingsView()
 }

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct GameSession: Identifiable, Codable {
+struct GameSession: Identifiable, Codable
+{
 
     let id: UUID
     let mode: GameMode
@@ -31,5 +32,5 @@ struct GameSession: Identifiable, Codable {
         self.timestamp = timestamp
         self.latitude = latitude
         self.longitude = longitude
-    }
+      }
 }

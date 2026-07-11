@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct TriviaQuestion: Codable, Identifiable {
+struct TriviaQuestion: Codable, Identifiable
+{
 
     let id = UUID()
 
@@ -18,7 +19,8 @@ struct TriviaQuestion: Codable, Identifiable {
     let correctAnswer: String
     let incorrectAnswers: [String]
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case category
         case type
         case difficulty
@@ -27,7 +29,8 @@ struct TriviaQuestion: Codable, Identifiable {
         case incorrectAnswers = "incorrect_answers"
     }
     
-    var allAnswers: [String] {
+    var allAnswers: [String]
+    {
         ([correctAnswer] + incorrectAnswers).shuffled()
     }
     

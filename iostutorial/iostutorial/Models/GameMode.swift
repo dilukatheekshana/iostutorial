@@ -7,13 +7,16 @@
 
 import Foundation
 
-enum GameMode: String, Codable, CaseIterable {
+enum GameMode: String, Codable, CaseIterable
+{
     case tapFrenzy = "Tap Frenzy"
     case lightItUp = "Light It Up"
     case quizRush = "Quiz Rush"
 
-    var icon: String {
-        switch self {
+    var icon: String
+    {
+        switch self
+        {
         case .tapFrenzy:
             return "hand.tap.fill"
 
@@ -21,20 +24,22 @@ enum GameMode: String, Codable, CaseIterable {
             return "lightbulb.fill"
 
         case .quizRush:
-            return "questionmark.circle.fill"
+            return "brain.head.profile"
         }
     }
 
-    var colorName: String {
-        switch self {
+    var colorName: String
+    {
+        switch self
+        {
         case .tapFrenzy:
-            return "red"
+            return "blue"
 
         case .lightItUp:
-            return "yellow"
+            return "green"
 
         case .quizRush:
-            return "blue"
+            return "indigo"
         }
     }
 }

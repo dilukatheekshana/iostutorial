@@ -8,27 +8,28 @@
 import Foundation
 internal import _LocationEssentials
 
-final class GameSessionService {
-
+final class GameSessionService
+{
     static let shared = GameSessionService()
 
     private let storageKey = "game_sessions"
 
     private init() {}
 
-    func loadSessions() -> [GameSession] {
+    func loadSessions() -> [GameSession]
+    {
         guard
             let data = UserDefaults.standard.data(forKey: storageKey),
             let sessions = try? JSONDecoder().decode([GameSession].self, from: data)
-        else {
+        else
+        {
             return []
         }
-
         return sessions.sorted { $0.timestamp > $1.timestamp }
     }
 
-    func addSession(_ session: GameSession) {
-
+    func addSession(_ session: GameSession)
+    {
         let location = LocationService.shared.currentLocation
 
         let updatedSession = GameSession(
@@ -52,37 +53,52 @@ final class GameSessionService {
         )
     }
 
-    func saveSessions(_ sessions: [GameSession]) {
-        guard let data = try? JSONEncoder().encode(sessions) else { return }
+    func saveSessions(_ sessions: [GameSession])
+    {
+        guard let data = try? JSONEncoder().encode(sessions)
+        else
+        {
+            return
+        }
         UserDefaults.standard.set(data, forKey: storageKey)
     }
-
-    func deleteAllSessions() {
+ 
+    func deleteAllSessions()
+    {
         UserDefaults.standard.removeObject(forKey: storageKey)
     }
 
-    // MARK: - Statistics
-
-    var totalGames: Int {
+    var totalGames: Int
+    {
         loadSessions().count
     }
 
-    var highestScore: Int {
+    var highestScore: Int
+    {
         loadSessions().map(\.score).max() ?? 0
     }
 
-    var averageScore: Double {
+    var averageScore: Double
+    {
         let sessions = loadSessions()
 
-        guard !sessions.isEmpty else { return 0 }
+        guard !sessions.isEmpty
+        else
+        {
+            return 0
+        }
 
-        let total = sessions.reduce(0) { $0 + $1.score }
+        let total = sessions.reduce(0)
+        {
+            $0 + $1.score
+        }
 
         return Double(total) / Double(sessions.count)
     }
     
 }
 
-extension Notification.Name {
+extension Notification.Name
+{
     static let gameSessionsUpdated = Notification.Name("gameSessionsUpdated")
 }

@@ -7,23 +7,23 @@
 
 import SwiftUI
 
-struct GameStatisticsCard: View {
+struct GameStatisticsCard: View
+{
 
     let statistics: StatsViewModel.GameStatistics
 
-    var body: some View {
-
-        VStack(alignment: .leading, spacing: 12) {
-
-            HStack {
-
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 12)
+        {
+            HStack
+            {
                 Image(systemName: statistics.mode.icon)
                     .foregroundStyle(iconColor)
 
                 Text(statistics.mode.rawValue)
                     .font(.headline)
                     .foregroundStyle(.white)
-
             }
 
             Divider()
@@ -51,10 +51,10 @@ struct GameStatisticsCard: View {
     }
 
     @ViewBuilder
-    private func statisticRow(title: String, value: String) -> some View {
-
-        HStack {
-
+    private func statisticRow(title: String, value: String) -> some View
+    {
+        HStack
+        {
             Text(title)
                 .foregroundStyle(.gray)
 
@@ -63,26 +63,22 @@ struct GameStatisticsCard: View {
             Text(value)
                 .foregroundStyle(.white)
                 .fontWeight(.bold)
-
         }
-
     }
 
-    private var iconColor: Color {
-
-        switch statistics.mode {
-
+    private var iconColor: Color
+    {
+        switch statistics.mode
+        {
         case .tapFrenzy:
-            return .red
-
-        case .lightItUp:
-            return .yellow
-
-        case .quizRush:
             return .blue
 
-        }
+        case .lightItUp:
+            return .green
 
+        case .quizRush:
+            return .indigo
+        }
     }
 
 }

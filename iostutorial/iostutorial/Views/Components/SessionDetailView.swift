@@ -7,16 +7,15 @@
 
 import SwiftUI
 
-struct SessionDetailView: View {
-
+struct SessionDetailView: View
+{
     let session: GameSession
-
-    var body: some View {
-
-        NavigationStack {
-
-            VStack(spacing: 25) {
-
+    var body: some View
+    {
+        NavigationStack
+        {
+            VStack(spacing: 25)
+            {
                 Image(systemName: session.mode.icon)
                     .font(.system(size: 70))
                     .foregroundStyle(iconColor)
@@ -25,8 +24,8 @@ struct SessionDetailView: View {
                     .font(.largeTitle)
                     .bold()
 
-                VStack(spacing: 15) {
-
+                VStack(spacing: 15)
+                {
                     Label(
                         "Score: \(session.score)",
                         systemImage: "trophy.fill"
@@ -58,26 +57,22 @@ struct SessionDetailView: View {
             .padding()
             .navigationTitle("Game Session")
             .navigationBarTitleDisplayMode(.inline)
-
         }
-
     }
 
-    private var iconColor: Color {
-
-        switch session.mode {
-
+    private var iconColor: Color
+    {
+        switch session.mode
+        {
         case .tapFrenzy:
-            return .red
-
-        case .lightItUp:
-            return .yellow
-
-        case .quizRush:
             return .blue
 
-        }
+        case .lightItUp:
+            return .green
 
+        case .quizRush:
+            return .indigo
+        }
     }
 
 }

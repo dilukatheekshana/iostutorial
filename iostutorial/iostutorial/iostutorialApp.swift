@@ -8,11 +8,15 @@
 import SwiftUI
 
 @main
-struct iostutorialApp: App {
-    var body: some Scene {
-        WindowGroup {
+struct iostutorialApp: App
+{
+    var body: some Scene
+    {
+        WindowGroup
+        {
             MainTabView()
-                .onAppear {
+                .onAppear
+                {
                     LocationService.shared.requestPermission()
                 }
         }

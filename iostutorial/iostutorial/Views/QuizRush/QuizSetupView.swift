@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct QuizSetupView: View {
+struct QuizSetupView: View
+{
 
     @StateObject private var viewModel = QuizRushViewModel()
 
@@ -16,67 +17,84 @@ struct QuizSetupView: View {
         "hard"
     ]
     
-    // MARK: - Custom Initialization for Picker Colors
-        init() {
-            // 1. Set the unselected text color to white
-            UISegmentedControl.appearance().setTitleTextAttributes(
-                [.foregroundColor: UIColor.white], for: .normal
-            )
-            
-            // 2. Set the selected text color to black
-            UISegmentedControl.appearance().setTitleTextAttributes(
-                [.foregroundColor: UIColor.black], for: .selected
-            )
-        }
+    init()
+    {
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white
 
-    var body: some View {
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor.white],
+            for: .normal
+        )
 
-        ZStack {
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor.black],
+            for: .selected
+        )
+    }
+
+    var body: some View
+    {
+
+        ZStack
+        {
 
             Color.black
                 .ignoresSafeArea()
 
-            VStack(spacing: 25) {
+            VStack(spacing: 25)
+            {
 
                 Spacer()
 
-                VStack(spacing: 8) {
-
-                    Text("📚")
-                        .font(.system(size: 60))
+                VStack(spacing: 8)
+                {
+                    ZStack
+                    {
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(Color.indigo)
+                            .frame(width: 100, height: 100)
+                            
+                        Image(systemName: "book.pages")
+                            .font(Font.system(size: 60, weight: .bold, design: .rounded))
+                    }
+                    
 
                     Text("Quiz Rush")
                         .font(.largeTitle)
                         .bold()
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.indigo)
 
                     Text("Test Your Knowledge")
                         .foregroundStyle(.gray)
 
                 }
 
-                SectionCard(title: "Category") {
+                SectionCard(title: "Category")
+                {
 
-                    Picker("Category", selection: $selectedCategory) {
-
+                    Picker("Category", selection: $selectedCategory)
+                    {
                         ForEach(TriviaCategory.all) { category in
 
                             Text(category.name)
                                 .tag(category as TriviaCategory?)
 
                         }
-
                     }
                     .pickerStyle(.menu)
-                    .tint(Color.purple)
+                    .tint(Color.indigo)
 
                 }
 
-                SectionCard(title: "Difficulty") {
+                SectionCard(title: "Difficulty")
+                {
 
-                    Picker("Difficulty", selection: $selectedDifficulty) {
+                    Picker("Difficulty", selection: $selectedDifficulty)
+                    {
 
-                        ForEach(difficulties, id: \.self) { difficulty in
+                        ForEach(difficulties, id: \.self)
+                        {
+                            difficulty in
 
                             Text(difficulty.capitalized)
                                 .tag(difficulty)  
@@ -88,9 +106,11 @@ struct QuizSetupView: View {
 
                 }
 
-                PrimaryButton(title: "Start Quiz") {
+                PrimaryButton(title: "Start Quiz")
+                {
 
-                    Task {
+                    Task
+                    {
 
                         await viewModel.loadQuestions(
                             category: selectedCategory?.id,
@@ -105,13 +125,14 @@ struct QuizSetupView: View {
                 NavigationLink {
                     QuizHighScoreView(viewModel: viewModel)
                 } label: {
-                    Text("View High Scores")
+                    Text("View High Score")
                         .foregroundStyle(.white)
                 }
 
                 Spacer()
 
-                    .navigationDestination(isPresented: $startQuiz) {
+                    .navigationDestination(isPresented: $startQuiz)
+                    {
                         QuizRushView(viewModel: viewModel)
                     }
 
@@ -119,13 +140,13 @@ struct QuizSetupView: View {
             .padding()
 
         }
-//        .navigationBarHidden(true)
         .toolbar(.hidden, for: .tabBar)
 
     }
 
 }
 
-#Preview {
+#Preview
+{
     QuizSetupView()
 }

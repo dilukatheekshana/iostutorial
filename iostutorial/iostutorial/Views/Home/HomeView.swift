@@ -1,27 +1,28 @@
 import SwiftUI
 
-struct HomeView: View {
+struct HomeView: View
+{
+    var body: some View
+    {
+        NavigationStack
+        {
 
-    var body: some View {
-
-        NavigationStack {
-
-            ZStack {
-
+            ZStack
+            {
                 Color.black
                     .ignoresSafeArea()
 
-                VStack(spacing: 30) {
+                VStack(spacing: 30)
+                {
 
                     Spacer()
 
-                    // MARK: Header
-
-                    VStack(spacing: 12) {
+                    VStack(spacing: 12)
+                    {
 
                         Image(systemName: "gamecontroller.fill")
                             .font(.system(size: 70))
-                            .foregroundStyle(.purple)
+                            .foregroundStyle(.white)
 
                         Text("Arcade Hub")
                             .font(.largeTitle)
@@ -35,9 +36,8 @@ struct HomeView: View {
 
                     Spacer()
 
-                    // MARK: Tap Frenzy
-
-                    NavigationLink {
+                    NavigationLink
+                    {
 
                         TapFrenzyView()
 
@@ -48,7 +48,8 @@ struct HomeView: View {
                             Image(systemName: "hand.tap.fill")
                                 .font(.title2)
 
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading)
+                            {
 
                                 Text("Tap Frenzy")
                                     .font(.headline)
@@ -72,20 +73,21 @@ struct HomeView: View {
 
                     }
 
-                    // MARK: Light It Up
-
-                    NavigationLink {
+                    NavigationLink
+                    {
 
                         LightItUpView()
 
                     } label: {
 
-                        HStack {
+                        HStack
+                        {
 
                             Image(systemName: "lightbulb.fill")
                                 .font(.title2)
 
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading)
+                            {
 
                                 Text("Light It Up")
                                     .font(.headline)
@@ -109,20 +111,20 @@ struct HomeView: View {
 
                     }
 
-                    // MARK: Quiz Rush
-
                     NavigationLink {
 
                         QuizSetupView()
 
                     } label: {
 
-                        HStack {
+                        HStack
+                        {
 
                             Image(systemName: "brain.head.profile")
                                 .font(.title2)
 
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading)
+                            {
 
                                 Text("Quiz Rush")
                                     .font(.headline)
@@ -141,7 +143,7 @@ struct HomeView: View {
                         .foregroundStyle(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.red)
+                        .background(Color.indigo)
                         .cornerRadius(18)
 
                     }

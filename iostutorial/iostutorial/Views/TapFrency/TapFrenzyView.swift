@@ -1,68 +1,69 @@
 import SwiftUI
 internal import Combine
 
-struct TapFrenzyView: View {
+struct TapFrenzyView: View
+{
     
     @StateObject private var viewModel = TapFrenzyViewModel()
     
-    // Main Countdown Timer
     let timer = Timer.publish(
         every: 1,
         on: .main,
         in: .common
     ).autoconnect()
     
-    // Moving Target Timer
     let moveTimer = Timer.publish(
         every: 2,
         on: .main,
         in: .common
     ).autoconnect()
     
-    var body: some View {
+    var body: some View
+    {
         
-        GeometryReader { geometry in
+        GeometryReader
+        {
+            geometry in
             
-            ZStack {
-                
-                // MARK: - Background
+            ZStack
+            {
                 Color.black
                     .ignoresSafeArea()
                 
-                if !viewModel.gameOver {
-                    
-                    VStack {
-                        
-                        // Title
+                if !viewModel.gameOver
+                {
+                    VStack
+                    {
                         Text("Tap Frenzy")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.blue)
                             .padding(.top, 40)
-                        
-                        // Score + Timer Row (Styled like QuizRush)
-                        HStack {
-                            
-                            VStack(alignment: .leading) {
+
+                        HStack
+                        {
+                            VStack(alignment: .leading)
+                            {
                                 Text("Score")
                                     .foregroundStyle(.gray)
                                 
                                 Text("\(viewModel.score)")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(.blue)
                             }
                             
                             Spacer()
                             
-                            VStack(alignment: .trailing) {
+                            VStack(alignment: .trailing)
+                            {
                                 Text("Time")
                                     .foregroundStyle(.gray)
                                 
                                 Text("\(viewModel.timeRemaining)")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundStyle(.orange)
+                                    .foregroundStyle(.white)
                             }
                         }
                         .padding(.horizontal, 30)
@@ -71,11 +72,12 @@ struct TapFrenzyView: View {
                         Spacer()
                         
                     }
-                    
-                    // TAP BUTTON
-                    Button(action: {
+
+                    Button(action:
+                    {
                         viewModel.tapButton()
-                    }) {
+                    })
+                    {
                         Text("TAP")
                             .font(.largeTitle)
                             .fontWeight(.bold)
@@ -84,7 +86,7 @@ struct TapFrenzyView: View {
                                 width: viewModel.buttonSize,
                                 height: viewModel.buttonSize
                             )
-                            .background(Color.purple)
+                            .background(Color.blue)
                             .clipShape(Circle())
                     }
                     .position(
@@ -95,24 +97,28 @@ struct TapFrenzyView: View {
                         viewModel.moveTarget(geometry: geometry)
                     }
                     
-                } else {
+                }
+                else
+                {
                     
-                    VStack(spacing: 25) {
+                    VStack(spacing: 25)
+                    {
                         
                         Text("Game Over!")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.red)
                         
-                        VStack(spacing: 10) {
+                        VStack(spacing: 10)
+                        {
                             Text("Final Score: \(viewModel.score)")
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundStyle(.yellow)
+                                .foregroundStyle(.blue)
                             
                             Text("High Score: \(viewModel.highScore)")
                                 .font(.title2)
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(.white)
                         }
                         
                         Button("Play Again") {
@@ -121,28 +127,31 @@ struct TapFrenzyView: View {
                         .font(.headline)
                         .padding()
                         .frame(width: 180)
-                        .background(Color.purple)
+                        .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(14)
                         
                         ShareLink(
                             item: "🎮 I scored \(viewModel.score) points in Tap Frenzy on PlayHub! Can you beat my score?"
-                        ) {
+                        )
+                        {
                             Label("Share Score", systemImage: "square.and.arrow.up")
                                 .frame(width: 180)
                                 .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
+                                .background(Color.white)
+                                .foregroundColor(.black)
                                 .cornerRadius(14)
                         }
                     }
                 }
             }
-            .onAppear {
-                // Initial button position
+            .onAppear
+            {
                 viewModel.setInitialPosition(geometry: geometry)
             }
-            .onReceive(timer) { _ in
+            .onReceive(timer)
+            {
+                _ in
                 viewModel.processTimerTick()
             }
         }
@@ -150,6 +159,7 @@ struct TapFrenzyView: View {
     }
 }
 
-#Preview {
+#Preview
+{
     TapFrenzyView()
 }

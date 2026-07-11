@@ -1,16 +1,20 @@
 import SwiftUI
 
-struct QuizRushView: View {
+struct QuizRushView: View
+{
 
     @ObservedObject var viewModel: QuizRushViewModel
     
     @State private var showResults = false
 
-    var body: some View {
+    var body: some View
+    {
 
-        ZStack {
+        ZStack
+        {
             
-            if viewModel.showFlash {
+            if viewModel.showFlash
+            {
 
                 Color(viewModel.flashIsCorrect ? .green : .red)
                     .opacity(0.3)
@@ -22,7 +26,8 @@ struct QuizRushView: View {
             Color.black
                 .ignoresSafeArea()
 
-            switch viewModel.state {
+            switch viewModel.state
+            {
 
             case .idle:
 
@@ -55,43 +60,45 @@ struct QuizRushView: View {
 
             case .loaded:
 
-                if let question = viewModel.currentQuestion {
+                if let question = viewModel.currentQuestion
+                {
 
                     VStack(spacing: 25) {
 
-                        // Score Row
+                        HStack
+                        {
 
-                        HStack {
-
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading)
+                            {
 
                                 Text("Score")
                                     .foregroundStyle(.gray)
 
                                 Text("\(viewModel.score)")
                                     .bold()
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(.indigo)
 
                             }
 
                             Spacer()
 
-                            VStack(alignment: .trailing) {
+                            VStack(alignment: .trailing)
+                            {
 
                                 Text("Streak")
                                     .foregroundStyle(.gray)
 
                                 Text("\(viewModel.streak)")
                                     .bold()
-                                    .foregroundStyle(.orange)
+                                    .foregroundStyle(.white)
 
                             }
 
                         }
 
-                        // Progress
 
-                        VStack(spacing: 8) {
+                        VStack(spacing: 8)
+                        {
 
                             Text("Question \(viewModel.currentQuestionIndex + 1) of \(viewModel.questions.count)")
                                 .foregroundStyle(.gray)
@@ -100,12 +107,11 @@ struct QuizRushView: View {
                                 value: Double(viewModel.currentQuestionIndex + 1),
                                 total: Double(viewModel.questions.count)
                             )
-                            .tint(.purple)
+                            .tint(.indigo)
 
                         }
                             .foregroundStyle(.gray)
 
-                        // Question
 
                         Text(question.question.htmlDecoded)
                             .font(.title2)
@@ -116,12 +122,12 @@ struct QuizRushView: View {
 
                         Spacer()
 
-                        // Answers
+                        ForEach(viewModel.answers, id: \.self)
+                        {
+                            answer in
 
-                        ForEach(viewModel.answers, id: \.self) { answer in
-
-                            Button {
-
+                            Button
+                            {
                                 viewModel.answerQuestion(selectedAnswer: answer)
 
                             } label: {
@@ -163,34 +169,34 @@ struct QuizRushView: View {
 
     }
     
-    private func buttonColor(_ answer: String) -> Color {
+    private func buttonColor(_ answer: String) -> Color
+    {
 
         guard viewModel.answerSubmitted,
-              let question = viewModel.currentQuestion else {
-
-            return .purple
-
+              let question = viewModel.currentQuestion
+        else
+        {
+            return .indigo
         }
 
-        if answer == question.correctAnswer.htmlDecoded {
-
+        if answer == question.correctAnswer.htmlDecoded
+        {
             return .green
-
         }
 
-        if answer == viewModel.selectedAnswer {
-
+        if answer == viewModel.selectedAnswer
+        {
             return .red
-
         }
 
-        return .purple
+        return .indigo
 
     }
 
 }
 
-#Preview {
+#Preview
+{
     QuizRushView(
         viewModel: QuizRushViewModel()
     )

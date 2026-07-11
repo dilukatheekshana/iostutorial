@@ -9,62 +9,60 @@ import Foundation
 import CoreLocation
 internal import Combine
 
-final class LocationService: NSObject, ObservableObject {
-
+final class LocationService: NSObject, ObservableObject
+{
     static let shared = LocationService()
 
     @Published var currentLocation: CLLocation?
 
     private let manager = CLLocationManager()
 
-    private override init() {
+    private override init()
+    {
         super.init()
 
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
     }
 
-    func requestPermission() {
+    func requestPermission()
+    {
         manager.requestWhenInUseAuthorization()
     }
 
-    func requestLocation() {
+    func requestLocation()
+    {
         manager.requestLocation()
     }
     
-    func refreshLocation() {
+    func refreshLocation()
+    {
         manager.requestLocation()
     }
-
 }
 
 
-extension LocationService: CLLocationManagerDelegate {
-
+extension LocationService: CLLocationManagerDelegate
+{
     func locationManager(
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
     ) {
-
         currentLocation = locations.first
-
     }
 
     func locationManager(
         _ manager: CLLocationManager,
         didFailWithError error: Error
     ) {
-
         print("Location Error:", error.localizedDescription)
-
     }
 
     func locationManagerDidChangeAuthorization(
         _ manager: CLLocationManager
     ) {
-
-        switch manager.authorizationStatus {
-
+        switch manager.authorizationStatus
+        {
         case .authorizedAlways,
              .authorizedWhenInUse:
 
@@ -73,7 +71,5 @@ extension LocationService: CLLocationManagerDelegate {
         default:
             break
         }
-
     }
-
 }

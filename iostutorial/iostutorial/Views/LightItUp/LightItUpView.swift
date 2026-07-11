@@ -1,7 +1,8 @@
 import SwiftUI
 internal import Combine
 
-struct LightItUpView: View {
+struct LightItUpView: View
+{
 
     @StateObject private var viewModel = LightItUpViewModel()
 
@@ -17,47 +18,52 @@ struct LightItUpView: View {
         in: .common
     ).autoconnect()
 
-    var body: some View {
+    var body: some View
+    {
 
-        ZStack {
+        ZStack
+        {
             
-            // MARK: - Background
             Color.black
                 .ignoresSafeArea()
             
-            VStack {
+            VStack
+            {
                 
-                if !viewModel.gameOver {
+                if !viewModel.gameOver
+                {
                     
                     Text("Light It Up")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.green)
                         .padding(.top)
-                    
-                    // Score & Time Row (Styled like QuizRush)
-                    HStack {
+
+                    HStack
+                    {
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading)
+                        {
                             Text("Score")
                                 .foregroundStyle(.gray)
                             
                             Text("\(viewModel.score)")
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundStyle(.yellow)
+                                .foregroundStyle(.green)
                         }
                         
                         Spacer()
                         
-                        VStack(alignment: .trailing) {
+                        VStack(alignment: .trailing)
+                        {
                             Text("Time")
                                 .foregroundStyle(.gray)
                             
                             Text("\(viewModel.timeRemaining)")
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(.white)
                         }
                     }
                     .padding(.horizontal, 30)
@@ -102,35 +108,39 @@ struct LightItUpView: View {
                     .padding()
                     Spacer()
 
-                } else {
+                }
+                else
+                {
 
                     Spacer()
 
-                    VStack(spacing: 25) {
-
+                    VStack(spacing: 25)
+                    {
                         Text("Game Over!")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.red)
                         
-                        VStack(spacing: 10) {
+                        VStack(spacing: 10)
+                        {
                             Text("Final Score: \(viewModel.score)")
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundStyle(.yellow)
+                                .foregroundStyle(.green)
                             
                             Text("High Score: \(viewModel.highScore)")
                                 .font(.title2)
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(.white)
                         }
 
-                        Button("Play Again") {
+                        Button("Play Again")
+                        {
                             viewModel.restartGame()
                         }
                         .font(.headline)
                         .padding()
                         .frame(width: 180)
-                        .background(Color.purple)
+                        .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(14)
                         
@@ -141,8 +151,8 @@ struct LightItUpView: View {
                             Label("Share Score", systemImage: "square.and.arrow.up")
                                 .frame(width: 180)
                                 .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
+                                .background(Color.white)
+                                .foregroundColor(.black)
                                 .cornerRadius(14)
 
                         }
@@ -152,20 +162,26 @@ struct LightItUpView: View {
                 }
             }
         }
-        .onAppear {
+        .onAppear
+        {
             viewModel.setupCards()
             viewModel.lightRandomCards()
         }
-        .onReceive(gameTimer) { _ in
+        .onReceive(gameTimer)
+        {
+            _ in
             viewModel.processGameTimer()
         }
-        .onReceive(lightTimer) { _ in
+        .onReceive(lightTimer)
+        {
+            _ in
             viewModel.processLightTimer()
         }
         .toolbar(.hidden, for: .tabBar)
     }
 }
 
-#Preview {
+#Preview
+{
     LightItUpView()
 }
