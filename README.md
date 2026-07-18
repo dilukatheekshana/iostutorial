@@ -459,15 +459,66 @@ The application requests the following permissions:
 
 # Reflection
 
+## Tap Frenzy
 
-Suggested topics to discuss:
+Developing **Tap Frenzy** helped me understand the basics of SwiftUI game development. I learned how to update the user interface using state variables, create timers, detect user taps, and manage a game session from start to finish.
 
-- What was learned during the project.
-- Challenges encountered.
-- How problems were solved.
-- SwiftUI concepts that improved.
-- MVVM experience.
-- Future improvements.
+### What I Learned
+- Using `@State` to update the UI.
+- Working with timers and countdowns.
+- Handling button tap events.
+- Managing game states.
+- Building a responsive user interface.
+
+---
+
+## Light It Up
+
+The **Light It Up** game taught me how to manage multiple interactive objects and create more complex game logic. I learned how to randomize game elements, detect winning conditions, and improve the user experience.
+
+### What I Learned
+- Randomizing game data.
+- Managing multiple UI states.
+- Creating game rules and win conditions.
+- Updating the interface based on user actions.
+- Improving the user experience.
+
+---
+
+## Quiz Rush
+
+**Quiz Rush** helped me learn how to build a larger SwiftUI application using the MVVM architecture. I also learned how to fetch data from an online API and manage application data.
+
+### What I Learned
+- Using the MVVM design pattern.
+- Fetching data from an API.
+- Decoding JSON using `Codable`.
+- Handling asynchronous network requests.
+- Managing app state with `ObservableObject` and `@Published`.
+- Navigating between multiple screens.
+- Saving and displaying high scores.
+
+---
+
+## Shared Components
+
+Besides the games, I created reusable components that made the application more organized and easier to maintain.
+
+### What I Learned
+- Creating reusable SwiftUI components.
+- Using `NavigationStack` for navigation.
+- Sharing data between views.
+- Organizing project files.
+- Recording game history and displaying statistics.
+- Using charts to visualize game performance.
+- Saving user data locally.
+- Using Git and GitHub for version control.
+
+---
+
+## Overall Reflection
+
+This coursework helped me improve my SwiftUI and iOS development skills. I learned how to build different types of games, create reusable components, organize a project, and solve problems during development. I also gained experience with API integration, data storage, navigation, and version control using Git and GitHub. Overall, this project gave me more confidence in developing complete iOS applications.
 
 ---
 
@@ -492,14 +543,6 @@ Suggested topics to discuss:
 **Development Duration:** 4 Weeks
 
 **GitHub:** https://github.com/dilukatheekshana
-
----
-
-# License
-
-This project was developed as part of the **iOS Application Development** module for academic purposes.
-
-The source code is intended for educational use and learning. Commercial distribution or reuse should comply with the institution's academic policies.
 
 ---
 
